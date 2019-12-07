@@ -220,6 +220,7 @@ endif;
             <!-- /.box-header -->
             <div class="box-body no-padding">
               <table class="table table-striped">
+<<<<<<< HEAD:clinica/clientes.php
                 <tr class='active'>
                   <th>Foto</th>
                   <th>Nome</th>
@@ -235,6 +236,50 @@ endif;
                     <td><?=$cliente->email?></td>
                 <!--    <td><?=$cliente->celular?></td>  -->
                     <td><?=$cliente->telefone?></td>
+=======
+                <thead>
+                  <tr>
+                    <th style="width: 10px">Foto</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Celular</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
+                    <td>Fulano</td>
+                    <td>fulano@hotmail.com.br</td>
+                    <td>xxxx-xxxx</td>
+                    <td>xxxxx-xxxx</td>
+                    <td>
+                      <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
+                      <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
+                    <td>Fulano</td>
+                    <td>fulano@hotmail.com.br</td>
+                    <td>xxxx-xxxx</td>
+                    <td>xxxxx-xxxx</td>
+                    <td>
+                      <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
+                      <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
+                    <td>Fulano</td>
+                    <td>fulano@hotmail.com.br</td>
+                    <td>xxxx-xxxx</td>
+                    <td>xxxxx-xxxx</td>
+>>>>>>> 311445182173e0cf33d0f2667107e4ed7ad48d60:sistema 2/clientes.html
                     <td>
                       <a href='editar.php?cpf=<?=$cliente->cpf?>' class="btn btn-primary">Editar </a>
                       <a href='javascript:void(0)' class="btn btn-danger excluir" rel="<?=$cliente->cpf?>">Excluir</a>
@@ -352,11 +397,22 @@ endif;
                     <label for="exampleInputFile">Foto</label>
                     <input type="file" name="foto" id="foto" value="foto" >
                 </div>
+<<<<<<< HEAD:clinica/clientes.php
 
               <input type="hidden" name="acao" value="incluir">
               <button type="submit" class="btn btn-primary" id='botao'> 
                 Gravar
               </button>
+=======
+                <div class="form-group">
+                    <label for="exampleInputFile">Foto</label>
+                    <input type="file" id="exampleInputFile" name="photo">
+                </div>
+              <!-- /.box-body -->          
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success">Salvar</button>
+              </div>
+>>>>>>> 311445182173e0cf33d0f2667107e4ed7ad48d60:sistema 2/clientes.html
 
             </form>
           </div>
