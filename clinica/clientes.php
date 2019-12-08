@@ -224,7 +224,6 @@ endif;
                   <th>Foto</th>
                   <th>Nome</th>
                   <th>E-mail</th>
-             <!--     <th>Celular</th>  -->
                   <th>Telefone</th>
                   <th>Ação</th>
                 </tr>
@@ -233,7 +232,6 @@ endif;
                     <td><img src='fotos/<?=$cliente->foto?>' height='40' width='40'></td>
                     <td><?=$cliente->nome?></td>
                     <td><?=$cliente->email?></td>
-                <!--    <td><?=$cliente->celular?></td>  -->
                     <td><?=$cliente->telefone?></td>
                     <td>
                       <a data-cpf='<?=$cliente->cpf?>' data-telefone='<?=$cliente->telefone?>' data-foto='<?=$cliente->foto?>' data-email='<?=$cliente->email?>'
@@ -422,11 +420,10 @@ endif;
                 </div>
 
                 <div class="nome">
-                    <label for="nome">Foto</label>
+                    <label for="exampleInputFile">Foto</label>
                     <input type="file" name="foto" id="foto" value="foto" >
                 </div>
 
-              <input type="hidden" name="foto_atual" value="foto">
               <input type="hidden" name="acao" value="editar">
               <button type="submit" class="btn btn-primary" id='botao'> 
                 Gravar

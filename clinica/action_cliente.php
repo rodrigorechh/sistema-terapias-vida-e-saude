@@ -14,7 +14,7 @@
 		$data_nascimento  = (isset($_POST['data_nascimento'])) ? $_POST['data_nascimento'] : '';
 		$cpf   = (isset($_POST['cpf'])) ? str_replace(array('.','-'), '', $_POST['cpf']): '';
 		$email = (isset($_POST['email'])) ? $_POST['email'] : '';
-		$foto_atual		  = (isset($_POST['foto_atual'])) ? $_POST['foto_atual'] : '';
+		$foto_atual		  = (isset($_POST['foto'])) ? $_POST['foto'] : '';
 		$telefone  		  = (isset($_POST['telefone'])) ? str_replace(array('-', ' '), '', $_POST['telefone']) : '';
 		$celular   		  = (isset($_POST['celular'])) ? str_replace(array('-', ' '), '', $_POST['celular']) : '';
 
@@ -133,6 +133,7 @@
 		// Verifica se foi solicitada a edição de dados
 		if ($acao == 'editar'):
 			
+//			$nome_foto = 'padrao.jpg';
 			if(isset($_FILES['foto']) && $_FILES['foto']['size'] > 0): 
 
 				// Verifica se a foto é diferente da padrão, se verdadeiro exclui a foto antiga da pasta
@@ -166,9 +167,7 @@
 			          endif;  
 			     endif;
 			else:
-
-			 	$nome_foto = $foto_atual;
-
+			 	$nome_foto = 'padrao.jpg';
 			endif;
 
 			$sql = 'UPDATE tab_clientes SET nome=:nome, email=:email, cpf=:cpf, telefone=:telefone, celular=:celular, foto=:foto ';
