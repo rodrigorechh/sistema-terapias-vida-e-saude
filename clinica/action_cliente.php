@@ -132,7 +132,7 @@
 
 		// Verifica se foi solicitada a edição de dados
 		if ($acao == 'editar'):
-
+			
 			if(isset($_FILES['foto']) && $_FILES['foto']['size'] > 0): 
 
 				// Verifica se a foto é diferente da padrão, se verdadeiro exclui a foto antiga da pasta
