@@ -31,7 +31,8 @@ CREATE TABLE gastos (
     descricao varchar(200),
     valor double,
     id INTEGER AUTO_INCREMENT PRIMARY KEY,
-    fornecedor varchar(100)
+    fornecedor varchar(100),
+    data date
 );
 
 CREATE TABLE clientes_agenda_tab_agenda_tab_clientes_gastos (
@@ -71,3 +72,13 @@ VALUES (NULL, NULL, 'Massagem', '11111111111', '130', '16:00:00', '2020-01-02', 
 
 INSERT INTO `tab_agenda` (`pagamento`, `comparecimento`, `anotacoes`, `id_cpf`, `valor`, `hora`, `data`, `id`) 
 VALUES (NULL, NULL, 'Massagem', '33333333333', '130', '16:00:00', '2020-01-10', NULL);
+
+
+INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
+VALUES ('Aluguel', 'pagamento do aluguel', '860,00', NULL, '2019-12-01');
+
+INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
+VALUES ('Luz', 'pagamento de boleto', '185,00', 'Celesc', '2019-12-03');
+
+INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
+VALUES ('Internet', 'pagamento de boleto', '100,00', 'Net', '2019-12-05');
