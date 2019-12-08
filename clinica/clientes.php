@@ -258,30 +258,8 @@ endif;
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <?php
- /*                $qtd  = (isset($_POST['qtd'])) ? $_POST['qtd'] : '';
 
-                  $conexao = conexao::getInstance();
-                  $sql = 'SELECT COUNT(*) as qtd FROM tab_clientes';
-                  $stm = $conexao->prepare($sql);
- //                 $stm->bindValue(':qtd',$qtd);
-                  $stm->execute();
-                  //$clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-                  $row = $stm
-                 // $result = $row['Qtd'];
-                 // $qtd=$row['Qtd'];
-                  echo $row;
-
-
- ?>  <?php 
-                //  $query = 'SELECT COUNT(*) c FROM tab_clientes';
-                  //$result = mysql_query($query);
-                  //$row = mysql_fetch_assoc($result);
-                  //echo $cliente->data;
-
-  */                ?>
-
-                  <h3>44</h3>
+                  <h3>4</h3>
           
                   <p>Novos cliente</p>
                 </div>
@@ -374,30 +352,8 @@ endif;
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <?php
- /*                $qtd  = (isset($_POST['qtd'])) ? $_POST['qtd'] : '';
 
-                  $conexao = conexao::getInstance();
-                  $sql = 'SELECT COUNT(*) as qtd FROM tab_clientes';
-                  $stm = $conexao->prepare($sql);
- //                 $stm->bindValue(':qtd',$qtd);
-                  $stm->execute();
-                  //$clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-                  $row = $stm
-                 // $result = $row['Qtd'];
-                 // $qtd=$row['Qtd'];
-                  echo $row;
-
-
- ?>  <?php 
-                //  $query = 'SELECT COUNT(*) c FROM tab_clientes';
-                  //$result = mysql_query($query);
-                  //$row = mysql_fetch_assoc($result);
-                  //echo $cliente->data;
-
-  */                ?>
-
-                  <h3>44</h3>
+                  <h3>4</h3>
           
                   <p>Novos cliente</p>
                 </div>
@@ -450,28 +406,28 @@ endif;
 
                 <div class="form-group">
                   <label for="telefone">Telefone</label>
-                  <input type="telefone" class="form-control" id="telefoneEdita" maxlength="12" name="telefone" placeholder="Informe o Telefone">
+                  <input type="telefone" class="form-control" id="telefoneEdita" maxlength="10" name="telefone" placeholder="Informe o Telefone">
                   <span class='msg-erro msg-telefone'></span>
                 </div>
                 <div class="form-group">
                   <label for="celular">Celular</label>
-                  <input type="celular" class="form-control" id="celularEdita" maxlength="13" name="celular" placeholder="Informe o Celular">
+                  <input type="celular" class="form-control" id="celularEdita" maxlength="11" name="celular" placeholder="Informe o Celular">
                   <span class='msg-erro msg-celular'></span>
                 </div>
 
-
                 <div class="form-group">
                   <label for="cpf">CPF</label>
-                  <input type="cpf" class="form-control" id="cpfEdita" maxlength="14" name="cpf" placeholder="Informe o CPF">
+                  <input type="cpf" class="form-control" id="cpfEdita" maxlength="11" name="cpf" placeholder="Informe o CPF">
                   <span class='msg-erro msg-cpf'></span>
                 </div>
 
                 <div class="nome">
-                    <label for="exampleInputFile">Foto</label>
+                    <label for="nome">Foto</label>
                     <input type="file" name="foto" id="foto" value="foto" >
                 </div>
 
-              <input type="hidden" name="acao" value="incluir">
+              <input type="hidden" name="foto_atual" value="foto">
+              <input type="hidden" name="acao" value="editar">
               <button type="submit" class="btn btn-primary" id='botao'> 
                 Gravar
               </button>
