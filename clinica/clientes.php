@@ -256,9 +256,18 @@ endif;
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-
-                  <h3>4</h3>
-          
+                  <h3>
+                    <?php
+                      $conn = mysqli_connect('localhost','root','','clinica');
+                      $soma = mysqli_query($conn, "SELECT COUNT(cpf) FROM tab_clientes;");
+                      $linhas = mysqli_num_rows($soma);
+                      while($linhas = mysqli_fetch_array($soma)){
+                           echo $linhas['COUNT(cpf)'];
+                              ?>
+                              <?php
+                          }
+                    ?>
+                  </h3>          
                   <p>Novos cliente</p>
                 </div>
                 <div class="icon">
