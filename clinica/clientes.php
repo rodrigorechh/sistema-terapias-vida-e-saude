@@ -38,7 +38,7 @@ $termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
 if (empty($termo)):
 
   $conexao = conexao::getInstance();
-  $sql = 'SELECT nome, cpf, idade, email, data_nascimento, celular, telefone, status, foto FROM tab_clientes';
+  $sql = 'SELECT nome, cpf, idade, email, data_nascimento, celular, telefone, genero, data_nascimento, status, foto FROM tab_clientes';
   $stm = $conexao->prepare($sql);
   $stm->execute();
   $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
@@ -47,7 +47,7 @@ else:
 
   // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
   $conexao = conexao::getInstance();
-  $sql = 'SELECT nome, cpf, idade, email, data_nascimento, celular, telefone, status, foto FROM tab_clientes WHERE nome LIKE :nome OR email LIKE :email';
+  $sql = 'SELECT nome, cpf, idade, email, data_nascimento, celular, telefone, genero, data_nascimento, status, foto FROM tab_clientes WHERE nome LIKE :nome OR email LIKE :email';
   $stm = $conexao->prepare($sql);
   $stm->bindValue(':nome', $termo.'%');
   $stm->bindValue(':email', $termo.'%');
@@ -220,7 +220,6 @@ endif;
             <!-- /.box-header -->
             <div class="box-body no-padding">
               <table class="table table-striped">
-<<<<<<< HEAD:clinica/clientes.php
                 <tr class='active'>
                   <th>Foto</th>
                   <th>Nome</th>
@@ -236,52 +235,10 @@ endif;
                     <td><?=$cliente->email?></td>
                 <!--    <td><?=$cliente->celular?></td>  -->
                     <td><?=$cliente->telefone?></td>
-=======
-                <thead>
-                  <tr>
-                    <th style="width: 10px">Foto</th>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                    <th>Telefone</th>
-                    <th>Celular</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-
-                  <tr>
-                    <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
-                    <td>Fulano</td>
-                    <td>fulano@hotmail.com.br</td>
-                    <td>xxxx-xxxx</td>
-                    <td>xxxxx-xxxx</td>
                     <td>
-                      <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
-                      <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
-                    <td>Fulano</td>
-                    <td>fulano@hotmail.com.br</td>
-                    <td>xxxx-xxxx</td>
-                    <td>xxxxx-xxxx</td>
-                    <td>
-                      <button type="button" class="btn btn-primary btn-xs btn-flat">Editar</button>
-                      <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td><img src="dist/img/user1-128x128.jpg" alt="User Image" class="img-circle img-sm"></td>
-                    <td>Fulano</td>
-                    <td>fulano@hotmail.com.br</td>
-                    <td>xxxx-xxxx</td>
-                    <td>xxxxx-xxxx</td>
->>>>>>> 311445182173e0cf33d0f2667107e4ed7ad48d60:sistema 2/clientes.html
-                    <td>
-                      <a href='editar.php?cpf=<?=$cliente->cpf?>' class="btn btn-primary">Editar </a>
+                      <a data-cpf='<?=$cliente->cpf?>' data-telefone='<?=$cliente->telefone?>' data-foto='<?=$cliente->foto?>' data-email='<?=$cliente->email?>'
+                      data-nome= '<?=$cliente->nome?>' data-celular= '<?=$cliente->celular?>' data-genero= '<?=$cliente->genero?>' data-data_nascimento= '<?=$cliente->data_nascimento?>'
+                      class="btn btn-primary editar">Editar </a>
                       <a href='javascript:void(0)' class="btn btn-danger excluir" rel="<?=$cliente->cpf?>">Excluir</a>
                     </td>
                   </tr> 
@@ -292,7 +249,7 @@ endif;
           </div>
 
         </div>
-        <div class="col-md-4">
+        <div class="col-md-4" id="formAdd" style="display:block">
 
           <div class="row">
           
@@ -397,29 +354,133 @@ endif;
                     <label for="exampleInputFile">Foto</label>
                     <input type="file" name="foto" id="foto" value="foto" >
                 </div>
-<<<<<<< HEAD:clinica/clientes.php
 
               <input type="hidden" name="acao" value="incluir">
               <button type="submit" class="btn btn-primary" id='botao'> 
                 Gravar
               </button>
-=======
-                <div class="form-group">
-                    <label for="exampleInputFile">Foto</label>
-                    <input type="file" id="exampleInputFile" name="photo">
-                </div>
-              <!-- /.box-body -->          
-              <div class="box-footer">
-                <button type="submit" class="btn btn-success">Salvar</button>
-              </div>
->>>>>>> 311445182173e0cf33d0f2667107e4ed7ad48d60:sistema 2/clientes.html
 
             </form>
           </div>
 
         </div>
       </div>
+      <div class="col-md-4" id="formEdita" style="display:none">
 
+          <div class="row">
+          
+            <!-- ./col -->
+            <div class="col-xs-6">
+              <!-- small box -->
+              <div class="small-box bg-green">
+                <div class="inner">
+                  <?php
+ /*                $qtd  = (isset($_POST['qtd'])) ? $_POST['qtd'] : '';
+
+                  $conexao = conexao::getInstance();
+                  $sql = 'SELECT COUNT(*) as qtd FROM tab_clientes';
+                  $stm = $conexao->prepare($sql);
+ //                 $stm->bindValue(':qtd',$qtd);
+                  $stm->execute();
+                  //$clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+                  $row = $stm
+                 // $result = $row['Qtd'];
+                 // $qtd=$row['Qtd'];
+                  echo $row;
+
+
+ ?>  <?php 
+                //  $query = 'SELECT COUNT(*) c FROM tab_clientes';
+                  //$result = mysql_query($query);
+                  //$row = mysql_fetch_assoc($result);
+                  //echo $cliente->data;
+
+  */                ?>
+
+                  <h3>44</h3>
+          
+                  <p>Novos cliente</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-person-add"></i>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Novo Usuário</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form action="action_cliente.php" method="post" id='form-contato' enctype='multipart/form-data'>
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="nome">Nome</label>
+                  <input type="text" class="form-control" id="nomeEdita" name="nome" placeholder="Infome o Nome">
+                  <span class='msg-erro msg-nome'></span>
+                </div>
+                <div class="form-group">
+                  <label>Gênero</label>
+                  <div class="radio">
+                    <label for="genero">
+                      <input type="radio" id="generoEditaM" name="genero" value="M">
+                      Masculino</label>
+                  </div>
+                  <div class="radio">
+                    <label for="genero">
+                      <input type="radio" id="generoEditaF" name="genero" value="F">
+                      Feminino</label>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="data">Data de Nascimento</label>
+                  <input type="date" class="form-control" id="dataEdita" maxlength="10" name="data_nascimento" placeholder="Infome a Data de Agendamento">
+                  <span class='msg-erro msg-data'></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="email">E-mail</label>
+                  <input type="email" class="form-control" id="emailEdita" name="email" placeholder="Informe o E-mail">
+                  <span class='msg-erro msg-email'></span>
+                </div>
+
+                <div class="form-group">
+                  <label for="telefone">Telefone</label>
+                  <input type="telefone" class="form-control" id="telefoneEdita" maxlength="12" name="telefone" placeholder="Informe o Telefone">
+                  <span class='msg-erro msg-telefone'></span>
+                </div>
+                <div class="form-group">
+                  <label for="celular">Celular</label>
+                  <input type="celular" class="form-control" id="celularEdita" maxlength="13" name="celular" placeholder="Informe o Celular">
+                  <span class='msg-erro msg-celular'></span>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="cpf">CPF</label>
+                  <input type="cpf" class="form-control" id="cpfEdita" maxlength="14" name="cpf" placeholder="Informe o CPF">
+                  <span class='msg-erro msg-cpf'></span>
+                </div>
+
+                <div class="nome">
+                    <label for="exampleInputFile">Foto</label>
+                    <input type="file" name="foto" id="foto" value="foto" >
+                </div>
+
+              <input type="hidden" name="acao" value="incluir">
+              <button type="submit" class="btn btn-primary" id='botao'> 
+                Gravar
+              </button>
+
+            </form>
+          </div>
+
+        </div>
+      </div>              
     </section>
     <!-- /.content -->
   </div>
@@ -474,7 +535,7 @@ endif;
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
-
+<script src="js/editaCliente.js"></script>
 <script type="text/javascript" src="js/custom.js"></script>
 </body>
 </html>
