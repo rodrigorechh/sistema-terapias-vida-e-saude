@@ -195,7 +195,19 @@ endif;
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Gasto Total deste Mês: "valor"</h1>
+
+            <h1 class="m-0 text-dark">Gasto Total deste Mês: 
+              <?php
+              $conn = mysqli_connect('localhost','root','','clinica');
+              $soma = mysqli_query($conn, "SELECT sum(valor) FROM gastos");
+              $linhas = mysqli_num_rows($soma);
+              while($linhas = mysqli_fetch_array($soma)){
+                   echo $linhas['sum(valor)'];
+                      ?>
+                      <?php
+                  }
+            ?></h1>
+
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
