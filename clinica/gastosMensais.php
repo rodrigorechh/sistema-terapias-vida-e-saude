@@ -179,7 +179,106 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-8">
+        <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Lista de Usuários</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Tag</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Fornecedor</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <tr>
+                    <td>Aluguel</td>
+                    <td>Pagamento de aluguel</td>
+                    <td>50</td>
+                    <td></td>
+                    <td>
+                      <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Comida</td>
+                    <td>Almoço</td>
+                    <td>30</td>
+                    <td>Itapani</td>
+                    <td>
+                      <button type="button" class="btn btn-danger btn-xs btn-flat">Excluir</button>
+                    </td>
+                  </tr>
+
+                  
+                </tbody>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+        </div>
+        <div class="col-md-4">
+
+          <div class="row">
+
+
+          </div>
+
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Novo Usuário</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" id="form-user-create">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputTag">Tag</label>
+                  <select name="select" id="exampleInputTag" class="form-control">
+                    <option value="aluguel">Aluguel</option> 
+                    <option value="comida" selected>Comida</option>
+                    <option value="internet">Internet</option>
+                    <option value="internet">Impostos</option>
+                    <option value="internet">Salário de funcionário</option>
+                    <option value="internet">Outros</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputDescricao">Descrição</label>
+                  <input type="text" class="form-control" id="exampleInputDescricao" placeholder="Digite uma descrição do gasto" name="descricao">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputValor">Valor</label>
+                  <input type="number" class="form-control" id="exampleInputValor" placeholder="Coloque o valor" name="Valor">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFornecedor">Fornecedor</label>
+                  <input type="text" class="form-control" id="exampleInputFornecedor" placeholder="Digite o nome do fornecedor" name="fornecedor">
+                </div>
+              <!-- /.box-body -->          
+              <div class="box-footer">
+                <button type="submit" class="btn btn-success">Salvar</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+                   
+    </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
