@@ -35,6 +35,17 @@ CREATE TABLE gastos (
     data date
 );
 
+CREATE TABLE IF NOT EXISTS `events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(220) DEFAULT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `id_cpf` varchar(20),
+  `valor` double,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
 CREATE TABLE clientes_agenda_tab_agenda_tab_clientes_gastos (
     fk_tab_clientes_cpf varchar(20)
 );
