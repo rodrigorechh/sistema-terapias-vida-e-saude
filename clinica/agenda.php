@@ -209,8 +209,7 @@ endif;
     <!-- /.content-header -->
 
     <!-- Main content -->
-    
-    <!-- /.content -->
+    <iframe class="row" src="fullCalendar/index.php" style="margin : 0;width: 100%;border: 0;height: 810px;"></iframe>    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
