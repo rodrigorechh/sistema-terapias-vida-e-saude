@@ -27,6 +27,36 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+
+<?php
+require 'conexao.php';
+
+// Recebe o termo de pesquisa se existir
+$termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
+
+// Verifica se o termo de pesquisa está vazio, se estiver executa uma consulta completa
+if (empty($termo)):
+
+  $conexao = conexao::getInstance();
+  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos';
+  $stm = $conexao->prepare($sql);
+  $stm->execute();
+  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+
+else:
+
+  // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
+  $conexao = conexao::getInstance();
+  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE nome LIKE :nome OR email LIKE :email';
+  $stm = $conexao->prepare($sql);
+  $stm->bindValue(':tag', $termo.'%');
+  $stm->bindValue(':fornecedor', $termo.'%');
+  $stm->execute();
+  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+
+endif;
+?>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -165,7 +195,19 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+
+            <h1 class="m-0 text-dark">Gasto Total deste Mês: 
+              <?php
+              $conn = mysqli_connect('localhost','root','','clinica');
+              $soma = mysqli_query($conn, "SELECT sum(valor) FROM gastos");
+              $linhas = mysqli_num_rows($soma);
+              while($linhas = mysqli_fetch_array($soma)){
+                   echo $linhas['sum(valor)'];
+                      ?>
+                      <?php
+                  }
+            ?></h1>
+
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -179,7 +221,99 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    
+    <!-- Main content -->
+    <section class="content container-fluid">
+
+      <div class="row">
+        <div class="col-md-8">
+        <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Lista de Gastos</h3>
+            </div>
+            <!-- /.box-header -->
+           <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tr class='active'>
+                  <th>Tag</th>
+                  <th>Descrição</th>
+                  <th>Valor</th>
+                  <th>Fornecedor</th>
+                  <th>Ação</th>
+                </tr>
+                <?php foreach($clientes as $cliente):?>
+                  <tr>
+                    <td><?=$cliente->tag?></td>
+                    <td><?=$cliente->descricao?></td>
+                    <td><?=$cliente->valor?></td>
+                    <td><?=$cliente->fornecedor?></td>
+                   <td>
+                <a href='gastosMensais.php?id=<?=$cliente->id?>' class="btn btn-primary">Editar</a>
+                <a href='javascript:void(0)' class="btn btn-danger excluirgastos" rel="<?=$cliente->id?>">Excluir</a>
+              </td>
+                  </tr> 
+                <?php endforeach;?>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+        </div>
+        <div class="col-md-4">
+
+          <div class="row">
+
+
+          </div>
+
+          <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Novo Gasto</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form action="action_gastos.php" method="post" id='form-contato' enctype='multipart/form-data'>
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="tag">Tag</label>
+                  <select name="tag" id="tag" class="form-control">
+                    <option value="aluguel">Aluguel</option> 
+                    <option value="comida">Comida</option>
+                    <option value="internet">Internet</option>
+                    <option value="internet">Impostos</option>
+                    <option value="internet">Salário de funcionário</option>
+                    <option value="internet" selected>Outros</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="text">Descrição</label>
+                  <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição do gasto" name="descricao">
+                </div>
+                <div class="form-group">
+                  <label for="number">Valor</label>
+                  <input type="number" class="form-control" id="valor" placeholder="Coloque o valor" name="valor">
+                  <span class='msg-erro msg-valor'></span>
+                </div>
+                <div class="form-group">
+                  <label for="data">Data de Pagamento</label>
+                  <input type="date" class="form-control" id="data_pagamento" maxlength="10" name="data_pagamento" placeholder="Infome a Data de Pagamento">
+                  <span class='msg-erro msg-data_pagamento'></span>
+                </div>
+                <div class="form-group">
+                  <label for="text">Fornecedor</label>
+                  <input type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor" name="fornecedor">
+                </div>
+              <!-- /.box-body -->          
+              <div class="box-footer">
+                <input type="hidden" name="acao" value="incluir">
+                <button type="submit" class="btn btn-primary" id='botao'>Gravar</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+                   
+    </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -233,5 +367,6 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script type="text/javascript" src="js/custom.js"></script>
 </body>
 </html>

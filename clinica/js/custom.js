@@ -21,8 +21,7 @@ if (inputDataNascimento != null && inputDataNascimento.addEventListener) {
     inputDataNascimento.addEventListener("keypress", function(){mascaraTexto(this, '##/##/####')});
 } else if (inputDataNascimento != null && inputDataNascimento.attachEvent) {                  
     inputDataNascimento.attachEvent("onkeypress", function(){mascaraTexto(this, '##/##/####')});
-}
-*/
+}*/
 
 /* Atribui ao evento keypress do input telefone a função para formatar o Telefone (00 0000-0000) */
 var inputTelefone = document.getElementById("telefone");
@@ -48,7 +47,7 @@ if (inputFile != null && inputFile.addEventListener) {
 } else if (inputFile != null && inputFile.attachEvent) {                  
     inputFile.attachEvent("onchange", function(){loadFoto(this, foto_cliente)});
 }
-
+/*---------------------------------------------------------------------------------------------*/
 /* Atribui ao evento click do link de exclusão na página de consulta a função confirmaExclusao */
 var linkExclusao = document.querySelectorAll(".excluir");
 if (linkExclusao != null) { 
@@ -64,21 +63,36 @@ if (linkExclusao != null) {
 		})(i);
 	}
 }
-///////////////////////////////////////////
-var linkExclusao_ag = document.querySelectorAll(".link_exclusao");
-if (linkExclusao_ag != null) { 
-	for ( var i = 0; i < linkExclusao_ag.length; i++ ) {
-		(function(i){
-			var id_cliente = linkExclusao_ag[i].getAttribute('rel');
 
-			if (linkExclusao_ag[i].addEventListener){
-		    	linkExclusao_ag[i].addEventListener("click", function(){confirmaExclusao_ag(id_cliente);});
-			}else if (linkExclusao_ag[i].attachEvent) { 
-				linkExclusao[i].attachEvent("onclick", function(){confirmaExclusao_ag(id_cliente);});
+var linkExclusao_gastos = document.querySelectorAll(".excluirgastos");
+if (linkExclusao_gastos != null) { 
+	for ( var i = 0; i < linkExclusao_gastos.length; i++ ) {
+		(function(i){
+			var id_gastos = linkExclusao_gastos[i].getAttribute('rel');
+
+			if (linkExclusao_gastos[i].addEventListener){
+		    	linkExclusao_gastos[i].addEventListener("click", function(){confirmaExclusao_gastos(id_gastos);});
+			}else if (linkExclusao_gastos[i].attachEvent) { 
+				linkExclusao_gastos[i].attachEvent("onclick", function(){confirmaExclusao_gastos(id_gastos);});
 			}
 		})(i);
 	}
 }
+/*
+var linkExclusao_ag = document.querySelectorAll(".link_exclusao");
+if (linkExclusao_ag != null) { 
+	for ( var i = 0; i < linkExclusao_ag.length; i++ ) {
+		(function(i){
+			var id_agenda = linkExclusao_ag[i].getAttribute('rel');
+
+			if (linkExclusao_ag[i].addEventListener){
+		    	linkExclusao_ag[i].addEventListener("click", function(){confirmaExclusao_ag(id_agenda);});
+			}else if (linkExclusao_ag[i].attachEvent) { 
+				linkExclusao_ag[i].attachEvent("onclick", function(){confirmaExclusao_ag(id_agenda);});
+			}
+		})(i);
+	}
+}*/
 //////////////////////////////////////////////////
 /* Função para validar os dados antes da submissão dos dados */
 function validaCadastro(evt){
@@ -218,6 +232,37 @@ function confirmaExclusao_cl(cpf){
 	}
 }
 
+function confirmaExclusao_gastos(id){
+	retorno = confirm("Deseja excluir esse Registro?")
+
+	if (retorno){
+
+	    //Cria um formulário
+	    var formulario = document.createElement("form");
+	    formulario.action = "action_gastos.php";
+	    formulario.method = "post";
+
+		// Cria os inputs e adiciona ao formulário
+	    var inputAcao = document.createElement("input");
+	    inputAcao.type = "hidden";
+	    inputAcao.value = "excluir";
+	    inputAcao.name = "acao";
+	    formulario.appendChild(inputAcao); 
+
+	    var inputId = document.createElement("input");
+	    inputId.type = "hidden";
+	    inputId.value = id;
+	    inputId.name = "id";
+	    formulario.appendChild(inputId);
+
+	    //Adiciona o formulário ao corpo do documento
+	    document.body.appendChild(formulario);
+
+	    //Envia o formulário
+	    formulario.submit();
+	}
+}
+/*
 function confirmaExclusao_ag(id){
 	retorno = confirm("Deseja excluir esse Registro?")
 
@@ -247,4 +292,4 @@ function confirmaExclusao_ag(id){
 	    //Envia o formulário
 	    formulario.submit();
 	}
-}
+}*/
