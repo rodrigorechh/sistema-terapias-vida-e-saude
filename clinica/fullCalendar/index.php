@@ -46,11 +46,15 @@ session_start();
                     <div class="modal-body">
                         <div class="visevent">
                             <dl class="row">
-                                <dt class="col-sm-3">ID do evento</dt>
-                                <dd class="col-sm-9" id="id"></dd>
 
                                 <dt class="col-sm-3">Título do evento</dt>
                                 <dd class="col-sm-9" id="title"></dd>
+
+                                <dt class="col-sm-3">Cpf do cliente</dt>
+                                <dd class="col-sm-9" id="id"></dd>
+
+                                <dt class="col-sm-3">Valor recebido</dt>
+                                <dd class="col-sm-9" id="valor"></dd>
 
                                 <dt class="col-sm-3">Início do evento</dt>
                                 <dd class="col-sm-9" id="start"></dd>
@@ -58,11 +62,9 @@ session_start();
                                 <dt class="col-sm-3">Fim do evento</dt>
                                 <dd class="col-sm-9" id="end"></dd>
 
-                                <dt class="col-sm-3">Cpf do cliente</dt>
-                                <dd class="col-sm-9" id="id_cpf"></dd>
+                                
 
-                                <dt class="col-sm-3">Valor recebido</dt>
-                                <dd class="col-sm-9" id="valor"></dd>
+                        
                             </dl>
                             <button class="btn btn-warning btn-canc-vis">Editar</button>
                         </div>
@@ -109,7 +111,7 @@ session_start();
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">CPF do cliente</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="id_cpf" class="form-control" id="id_cpf" placeholder="CPF do evento">
+                                        <input type="text" name="id_cpf" class="form-control" id="id_cpf" maxlength="11" placeholder="CPF do evento">
                                     </div>
                                 </div>
                                     <div class="form-group row">
@@ -182,7 +184,7 @@ session_start();
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">CPF do cliente</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="id_cpf" class="form-control" id="id_cpf" placeholder="CPF do cliente">
+                                    <input type="text" name="id_cpf" class="form-control" id="id_cpf" maxlength="11" placeholder="CPF do cliente">
                                 </div>
                             </div>
                             <div class="form-group row">
