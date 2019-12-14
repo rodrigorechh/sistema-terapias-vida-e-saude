@@ -27,6 +27,36 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+
+<?php
+require 'conexao.php';
+
+// Recebe o termo de pesquisa se existir
+$termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
+
+// Verifica se o termo de pesquisa está vazio, se estiver executa uma consulta completa
+if (empty($termo)):
+
+  $conexao = conexao::getInstance();
+  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos';
+  $stm = $conexao->prepare($sql);
+  $stm->execute();
+  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+
+else:
+
+  // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
+  $conexao = conexao::getInstance();
+  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE nome LIKE :nome OR email LIKE :email';
+  $stm = $conexao->prepare($sql);
+  $stm->bindValue(':tag', $termo.'%');
+  $stm->bindValue(':fornecedor', $termo.'%');
+  $stm->execute();
+  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+
+endif;
+?>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -165,7 +195,19 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+
+            <h1 class="m-0 text-dark">Gasto Total deste Mês: 
+              <?php
+              $conn = mysqli_connect('localhost','root','','clinica');
+              $soma = mysqli_query($conn, "SELECT sum(valor) FROM gastos");
+              $linhas = mysqli_num_rows($soma);
+              while($linhas = mysqli_fetch_array($soma)){
+                   echo $linhas['sum(valor)'];
+                      ?>
+                      <?php
+                  }
+            ?></h1>
+
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -179,7 +221,51 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    
+    <!-- Main content -->
+    <section class="content container-fluid">
+      <select name="tag" id="tag" class="form-control">
+        <option value="internet" >mes1</option>
+        <option value="internet" >mes2</option>
+        <option value="internet" selected>mes3</option>
+      </select>
+      <div class="row">
+        <div class="col-md-8">
+        <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Dinheiro Recebido no Mês</h3>
+            </div>
+            <!-- /.box-header -->
+           <div class="box-body no-padding">
+              <table class="table table-striped">
+                <tr class='active'>
+                  <th>Data</th>
+                  <th>Valor</th>
+                  <th>Cpf do Cliente</th>                  
+                </tr>
+                  <tr>
+                    <td>a</td>
+                    <td>b</td>
+                    <td>c</td>
+                  </tr> 
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
+        </div>
+        <div class="col-md-4">
+
+          <div class="row">
+
+
+          </div>
+
+          
+
+        </div>
+      </div>
+                   
+    </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -233,5 +319,6 @@
 <script src="dist/js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<script type="text/javascript" src="js/custom.js"></script>
 </body>
 </html>
