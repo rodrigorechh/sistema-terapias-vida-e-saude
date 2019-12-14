@@ -258,15 +258,16 @@ endif;
                 <div class="inner">
                   <h3>
                     <?php
-                      $conn = mysqli_connect('localhost','root','','clinica');
-                      $soma = mysqli_query($conn, "SELECT COUNT(cpf) FROM tab_clientes;");
-                      $linhas = mysqli_num_rows($soma);
-                      while($linhas = mysqli_fetch_array($soma)){
-                           echo $linhas['COUNT(cpf)'];
-                              ?>
-                              <?php
-                          }
+                      $conexao = conexao::getInstance();
+                      $sql = 'SELECT COUNT(cpf) as soma FROM tab_clientes`';
+                      $stm = $conexao->prepare($sql);
+                      $stm->execute();
+                      $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
                     ?>
+                    <?php foreach($clientes as $cliente):?>                
+                      <td><?=$cliente->soma?></td>
+                    <?php endforeach;?>
+
                   </h3>          
                   <p>Novos cliente</p>
                 </div>

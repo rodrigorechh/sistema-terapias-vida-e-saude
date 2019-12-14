@@ -30,31 +30,6 @@
 
 <?php
 require 'conexao.php';
-
-// Recebe o termo de pesquisa se existir
-$termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
-
-// Verifica se o termo de pesquisa está vazio, se estiver executa uma consulta completa
-if (empty($termo)):
-
-  $conexao = conexao::getInstance();
-  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos';
-  $stm = $conexao->prepare($sql);
-  $stm->execute();
-  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-else:
-
-  // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
-  $conexao = conexao::getInstance();
-  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE nome LIKE :nome OR email LIKE :email';
-  $stm = $conexao->prepare($sql);
-  $stm->bindValue(':tag', $termo.'%');
-  $stm->bindValue(':fornecedor', $termo.'%');
-  $stm->execute();
-  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-endif;
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -187,6 +162,57 @@ endif;
     include 'menuLateral.html';
   ?> 
 
+    <?php
+    // Recebe o termo de pesquisa se existir
+    $mes = (isset($_GET['mes'])) ? $_GET['mes'] : '';
+    $ano = (isset($_GET['ano'])) ? $_GET['ano'] : '';
+
+    // Verifica se o termo de pesquisa está vazio ou incorreto, se estiver executa uma consulta do mes atual
+    if (empty($mes)):
+      $mes_escolhido = date('m');
+      if($mes_escolhido == 1): $mes_atual = 'Janeiro'; endif;
+      if($mes_escolhido == 2): $mes_atual = 'Fevereiro'; endif;
+      if($mes_escolhido == 3): $mes_atual = 'Março'; endif;
+      if($mes_escolhido == 4): $mes_atual = 'Abril'; endif;
+      if($mes_escolhido == 5): $mes_atual = 'Maio'; endif;
+      if($mes_escolhido == 6): $mes_atual = 'Junho'; endif;
+      if($mes_escolhido == 7): $mes_atual = 'Julho'; endif;
+      if($mes_escolhido == 8): $mes_atual = 'Agosto'; endif;
+      if($mes_escolhido == 9): $mes_atual = 'Setembro'; endif;
+      if($mes_escolhido == 10): $mes_atual = 'Outubro'; endif;
+      if($mes_escolhido == 11): $mes_atual = 'Novembro'; endif;
+      if($mes_escolhido == 12): $mes_atual = 'Dezembro'; endif;
+
+    else:// Executa uma consulta baseada no termo de pesquisa passado como parâmetro
+      $mes_escolhido = $mes;
+      if($mes_escolhido == 1): $mes_atual = 'Janeiro'; endif;
+      if($mes_escolhido == 2): $mes_atual = 'Fevereiro'; endif;
+      if($mes_escolhido == 3): $mes_atual = 'Março'; endif;
+      if($mes_escolhido == 4): $mes_atual = 'Abril'; endif;
+      if($mes_escolhido == 5): $mes_atual = 'Maio'; endif;
+      if($mes_escolhido == 6): $mes_atual = 'Junho'; endif;
+      if($mes_escolhido == 7): $mes_atual = 'Julho'; endif;
+      if($mes_escolhido == 8): $mes_atual = 'Agosto'; endif;
+      if($mes_escolhido == 9): $mes_atual = 'Setembro'; endif;
+      if($mes_escolhido == 10): $mes_atual = 'Outubro'; endif;
+      if($mes_escolhido == 11): $mes_atual = 'Novembro'; endif;
+      if($mes_escolhido == 12): $mes_atual = 'Dezembro'; endif;
+      if($mes!=1 || $mes!=2 || $mes!=3 || $mes!=4 || $mes!=5 || $mes!=6 || $mes!=7 || $mes!=8 || $mes!=9 || $mes!=10 || $mes!=11 || $mes!=12): $mes_atual = 'Janeiro'; endif;
+    endif;
+
+    // Verifica se o termo de pesquisa está vazio ou incorreto, se estiver executa uma consulta do ano atual
+    if (empty($ano)):
+      $ano_escolhido = date('Y');
+     
+    else:// Executa uma consulta baseada no termo de pesquisa passado como parâmetro
+      if($ano<1990 || $ano>2050):
+       $ano_escolhido = date('Y');
+      else:
+        $ano_escolhido = $ano;
+      endif;
+    endif;
+    ?>
+
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -196,17 +222,21 @@ endif;
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0 text-dark">Gasto Total deste Mês: 
+            <h1 class="m-0 text-dark">Gasto Total Mês de <?php  echo $mes_atual;?>: 
+
               <?php
-              $conn = mysqli_connect('localhost','root','','clinica');
-              $soma = mysqli_query($conn, "SELECT sum(valor) FROM gastos");
-              $linhas = mysqli_num_rows($soma);
-              while($linhas = mysqli_fetch_array($soma)){
-                   echo $linhas['sum(valor)'];
-                      ?>
-                      <?php
-                  }
-            ?></h1>
+                $conexao = conexao::getInstance();
+                $sql = 'SELECT sum(valor) as soma FROM gastos WHERE  MONTH(data)=:mes AND  YEAR(data)=:ano';
+                $stm = $conexao->prepare($sql);
+                $stm->bindValue(':mes', $mes_escolhido);
+                $stm->bindValue(':ano', $ano_escolhido);
+                $stm->execute();
+                $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+                ?>
+                <?php foreach($clientes as $cliente):?>                
+                  <td><?=$cliente->soma?></td>
+                <?php endforeach;?>
+              </h1>
 
           </div><!-- /.col -->
           <div class="col-sm-6">
@@ -219,21 +249,64 @@ endif;
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+  
+    <!-- Main content -->
+    <!-- Main content -->
 
-    <!-- Main content -->
-    <!-- Main content -->
-    <section class="content container-fluid">
-      <select name="tag" id="tag" class="form-control">
-        <option value="internet" >mes1</option>
-        <option value="internet" >mes2</option>
-        <option value="internet" selected>mes3</option>
-      </select>
+    <form action="historico.php" method="get" id='mes' enctype='multipart/form-data'>
+      <section class="content container-fluid">
+        <select name="mes" id="mes" class="form-control">
+          <option value="" selected>Selecione o Mês</option>
+          <option value="1" >Janeiro</option>
+          <option value="2" >Fevereiro</option>
+          <option value="3" >Março</option>
+          <option value="4" >Abril</option>
+          <option value="5" >Maio</option>
+          <option value="6" >Junho</option>
+          <option value="7" >Julho</option>
+          <option value="8" >Agosto</option>
+          <option value="9" >Setembro</option>
+          <option value="10" >Outubro</option>
+          <option value="11" >Novembro</option>
+          <option value="12" >Dezembro</option>
+        </select>
+        <div>
+          <input type="number" name="ano" class="form-control" value="2019" placeholder="Informe o Ano">
+        </div>
+      </section>
+      <button type="submit" class="form-control" id='botao'>Pesquisar</button>
+    </form>
+    
+
       <div class="row">
         <div class="col-md-8">
         <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Dinheiro Recebido no Mês</h3>
+              <h3 class="m-0 text-dark">Dinheiro recebido no Mês de <?php  echo $mes_atual;?>:
+              <?php
+                $conexao = conexao::getInstance();
+                $sql = 'SELECT sum(valor) as soma FROM events WHERE MONTH(end)=:mes AND YEAR(end)=:ano';
+                $stm = $conexao->prepare($sql);
+                $stm->bindValue(':mes', $mes_escolhido);
+                $stm->bindValue(':ano', $ano_escolhido);
+                $stm->execute();
+                $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+                ?>
+                <?php foreach($clientes as $cliente):?>                
+                  <td><?=$cliente->soma?></td>
+                <?php endforeach;?>
+              </h3>
             </div>
+
+            <?php
+              $conexao = conexao::getInstance();
+              $sql = 'SELECT start, valor, id_cpf FROM events WHERE MONTH(end)=:mes AND YEAR(end)=:ano';
+              $stm = $conexao->prepare($sql);
+              $stm->bindValue(':mes', $mes_escolhido);
+              $stm->bindValue(':ano', $ano_escolhido);
+              $stm->execute();
+              $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+            ?>
             <!-- /.box-header -->
            <div class="box-body no-padding">
               <table class="table table-striped">
@@ -242,11 +315,13 @@ endif;
                   <th>Valor</th>
                   <th>Cpf do Cliente</th>                  
                 </tr>
+                  <?php foreach($clientes as $cliente):?>
                   <tr>
-                    <td>a</td>
-                    <td>b</td>
-                    <td>c</td>
+                    <td><?=$cliente->start?></td>
+                    <td><?=$cliente->valor?></td>
+                    <td><?=$cliente->id_cpf?></td>
                   </tr> 
+                <?php endforeach;?>
               </table>
             </div>
             <!-- /.box-body -->

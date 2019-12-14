@@ -30,31 +30,6 @@
 
 <?php
 require 'conexao.php';
-
-// Recebe o termo de pesquisa se existir
-$termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
-
-// Verifica se o termo de pesquisa está vazio, se estiver executa uma consulta completa
-if (empty($termo)):
-
-  $conexao = conexao::getInstance();
-  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos';
-  $stm = $conexao->prepare($sql);
-  $stm->execute();
-  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-else:
-
-  // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
-  $conexao = conexao::getInstance();
-  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE nome LIKE :nome OR email LIKE :email';
-  $stm = $conexao->prepare($sql);
-  $stm->bindValue(':tag', $termo.'%');
-  $stm->bindValue(':fornecedor', $termo.'%');
-  $stm->execute();
-  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-endif;
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -186,7 +161,9 @@ endif;
   <?php 
     include 'menuLateral.html';
   ?> 
-
+  <?php 
+    $mes_atual = date("m");
+  ?> 
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -196,17 +173,19 @@ endif;
         <div class="row mb-2">
           <div class="col-sm-6">
 
-            <h1 class="m-0 text-dark">Gasto Total deste Mês: 
+            <h1 class="m-0 text-dark">Gastos Totais deste Mês: 
               <?php
-              $conn = mysqli_connect('localhost','root','','clinica');
-              $soma = mysqli_query($conn, "SELECT sum(valor) FROM gastos");
-              $linhas = mysqli_num_rows($soma);
-              while($linhas = mysqli_fetch_array($soma)){
-                   echo $linhas['sum(valor)'];
-                      ?>
-                      <?php
-                  }
-            ?></h1>
+                $conexao = conexao::getInstance();
+                $sql = 'SELECT sum(valor) as soma FROM gastos WHERE  MONTH(data)=:mes';
+                $stm = $conexao->prepare($sql);
+                $stm->bindValue(':mes', $mes_atual);
+                $stm->execute();
+                $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+                ?>
+                <?php foreach($clientes as $cliente):?>                
+                  <td><?=$cliente->soma?></td>
+                <?php endforeach;?>
+              </h1>
 
           </div><!-- /.col -->
           <div class="col-sm-6">
@@ -219,6 +198,34 @@ endif;
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+
+  <?php
+  // Recebe o termo de pesquisa se existir
+  $termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
+
+  // Verifica se o termo de pesquisa está vazio, se estiver executa uma consulta completa
+  if (empty($termo)):
+
+    $conexao = conexao::getInstance();
+    $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE  MONTH(data)=:mes';
+    $stm = $conexao->prepare($sql);
+    $stm->bindValue(':mes', $mes_atual);
+    $stm->execute();
+    $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+
+  else:
+
+    // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
+    $conexao = conexao::getInstance();
+    $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE nome LIKE :nome OR email LIKE :email';
+    $stm = $conexao->prepare($sql);
+    $stm->bindValue(':tag', $termo.'%');
+    $stm->bindValue(':fornecedor', $termo.'%');
+    $stm->execute();
+    $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+
+  endif;
+  ?>
 
     <!-- Main content -->
     <!-- Main content -->

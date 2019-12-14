@@ -31,30 +31,11 @@
 <?php
 require 'conexao.php';
 
-// Recebe o termo de pesquisa se existir
-$termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
-
-// Verifica se o termo de pesquisa está vazio, se estiver executa uma consulta completa
-if (empty($termo)):
-
   $conexao = conexao::getInstance();
-  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos';
+  $sql = 'SELECT id_cpf, valor, start, end FROM events';
   $stm = $conexao->prepare($sql);
   $stm->execute();
   $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-else:
-
-  // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
-  $conexao = conexao::getInstance();
-  $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE nome LIKE :nome OR email LIKE :email';
-  $stm = $conexao->prepare($sql);
-  $stm->bindValue(':tag', $termo.'%');
-  $stm->bindValue(':fornecedor', $termo.'%');
-  $stm->execute();
-  $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-endif;
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -186,8 +167,9 @@ endif;
   <?php 
     include 'menuLateral.html';
   ?> 
-
-
+  <?php
+  $mes_atual = date("m");
+  ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -195,18 +177,19 @@ endif;
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-
-            <h1 class="m-0 text-dark">Gasto Total deste Mês: 
+            <h1 class="m-0 text-dark">Dinheiro recebido no Mês: 
               <?php
-              $conn = mysqli_connect('localhost','root','','clinica');
-              $soma = mysqli_query($conn, "SELECT sum(valor) FROM gastos");
-              $linhas = mysqli_num_rows($soma);
-              while($linhas = mysqli_fetch_array($soma)){
-                   echo $linhas['sum(valor)'];
-                      ?>
-                      <?php
-                  }
-            ?></h1>
+                $conexao = conexao::getInstance();
+                $sql = 'SELECT sum(valor) as soma FROM events WHERE  MONTH(end)=:mes';
+                $stm = $conexao->prepare($sql);
+                $stm->bindValue(':mes', $mes_atual);
+                $stm->execute();
+                $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+                ?>
+                <?php foreach($clientes as $cliente):?>                
+                  <td><?=$cliente->soma?></td>
+                <?php endforeach;?>
+              </h1>
 
           </div><!-- /.col -->
           <div class="col-sm-6">
@@ -220,6 +203,14 @@ endif;
     </div>
     <!-- /.content-header -->
 
+     <?php
+        $conexao = conexao::getInstance();
+        $sql = 'SELECT start, valor, id_cpf FROM events';
+        $stm = $conexao->prepare($sql);
+        $stm->execute();
+        $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
+      ?>
+
     <!-- Main content -->
     <!-- Main content -->
     <section class="content container-fluid">
@@ -228,7 +219,7 @@ endif;
         <div class="col-md-8">
         <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Dinheiro Recebido no Mês</h3>
+              <h3 class="box-title">Lista de Recebimentos do Mês</h3>
             </div>
             <!-- /.box-header -->
            <div class="box-body no-padding">
@@ -238,11 +229,13 @@ endif;
                   <th>Valor</th>
                   <th>Cpf do Cliente</th>                  
                 </tr>
+                  <?php foreach($clientes as $cliente):?>
                   <tr>
-                    <td>a</td>
-                    <td>b</td>
-                    <td>c</td>
+                    <td><?=$cliente->start?></td>
+                    <td><?=$cliente->valor?></td>
+                    <td><?=$cliente->id_cpf?></td>
                   </tr> 
+                <?php endforeach;?>
               </table>
             </div>
             <!-- /.box-body -->
