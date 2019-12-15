@@ -33,7 +33,6 @@ session_start();
         }
         ?>
         <div id='calendar'></div>
-
         <div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -51,10 +50,11 @@ session_start();
                                 <dd class="col-sm-9" id="title"></dd>
 
                                 <dt class="col-sm-3">Cpf do cliente</dt>
-                                <dd class="col-sm-9" id="id"></dd>
+                                <dd class="col-sm-9" id="id_cpf"><?=$cliente->id_cpf?></dd>
+                                
 
                                 <dt class="col-sm-3">Valor recebido</dt>
-                                <dd class="col-sm-9" id="valor"></dd>
+                                <dd class="col-sm-9" id="valor"><?=$cliente->valor?></dd>
 
                                 <dt class="col-sm-3">Início do evento</dt>
                                 <dd class="col-sm-9" id="start"></dd>
@@ -62,9 +62,6 @@ session_start();
                                 <dt class="col-sm-3">Fim do evento</dt>
                                 <dd class="col-sm-9" id="end"></dd>
 
-                                
-
-                        
                             </dl>
                             <button class="btn btn-warning btn-canc-vis">Editar</button>
                         </div>
@@ -111,7 +108,7 @@ session_start();
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label">CPF do cliente</label>
                                     <div class="col-sm-10">
-                                        <input type="text" name="id_cpf" class="form-control" id="id_cpf" maxlength="11" placeholder="CPF do evento">
+                                        <input type="text" name="id_cpf" class="form-control" id="id_cpf" value="<?=$cliente->id_cpf?>" maxlength="11" placeholder="CPF do evento">
                                     </div>
                                 </div>
                                     <div class="form-group row">

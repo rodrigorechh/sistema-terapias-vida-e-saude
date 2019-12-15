@@ -15,18 +15,20 @@ $resultado_events->execute();
 $eventos = [];
 
 while($row_events = $resultado_events->fetch(PDO::FETCH_ASSOC)){
-    $id = $row_events['id_cpf'];
+    $id = $row_events['id'];
     $title = $row_events['title'];
     $color = $row_events['color'];
     $start = $row_events['start'];
+    $id_cpf = $row_events['id_cpf'];
     $valor = $row_events['valor'];
     $end = $row_events['end'];
     
     $eventos[] = [
-        'id' => $id, //para o cpf
+        'id' => $id,
         'title' => $title, 
         'color' => $color, 
-        'start' => $start, 
+        'start' => $start,
+        'id_cpf' => $id_cpf,
         'valor' => $valor,
         'end' => $end
         ];
