@@ -31,6 +31,9 @@
 <?php
 require 'conexao.php';
 ?>
+<?php
+$id_editar = (isset($_GET['id'])) ? $_GET['id'] : '';
+?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -200,40 +203,20 @@ require 'conexao.php';
     <!-- /.content-header -->
 
   <?php
-  // Recebe o termo de pesquisa se existir
-  $termo = (isset($_GET['termo'])) ? $_GET['termo'] : '';
-
-  // Verifica se o termo de pesquisa está vazio, se estiver executa uma consulta completa
-  if (empty($termo)):
-
     $conexao = conexao::getInstance();
     $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE  MONTH(data)=:mes';
     $stm = $conexao->prepare($sql);
     $stm->bindValue(':mes', $mes_atual);
     $stm->execute();
     $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-  else:
-
-    // Executa uma consulta baseada no termo de pesquisa passado como parâmetro
-    $conexao = conexao::getInstance();
-    $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE nome LIKE :nome OR email LIKE :email';
-    $stm = $conexao->prepare($sql);
-    $stm->bindValue(':tag', $termo.'%');
-    $stm->bindValue(':fornecedor', $termo.'%');
-    $stm->execute();
-    $clientes = $stm->fetchAll(PDO::FETCH_OBJ);
-
-  endif;
   ?>
 
-    <!-- Main content -->
     <!-- Main content -->
     <section class="content container-fluid">
 
       <div class="row">
         <div class="col-md-8">
-        <div class="box">
+          <div class="box">
             <div class="box-header">
               <h3 class="box-title">Lista de Gastos</h3>
             </div>
@@ -262,62 +245,167 @@ require 'conexao.php';
               </table>
             </div>
             <!-- /.box-body -->
-          </div>
-
+          </div>          
         </div>
-        <div class="col-md-4">
 
-          <div class="row">
-
-
-          </div>
-
-          <div class="box box-success">
-            <div class="box-header with-border">
-              <h3 class="box-title">Novo Gasto</h3>
-            </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-            <form action="action_gastos.php" method="post" id='form-contato' enctype='multipart/form-data'>
-              <div class="box-body">
-                <div class="form-group">
-                  <label for="tag">Tag</label>
-                  <select name="tag" id="tag" class="form-control">
-                    <option value="aluguel">Aluguel</option> 
-                    <option value="comida">Comida</option>
-                    <option value="internet">Internet</option>
-                    <option value="internet">Impostos</option>
-                    <option value="internet">Salário de funcionário</option>
-                    <option value="internet" selected>Outros</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="text">Descrição</label>
-                  <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição do gasto" name="descricao">
-                </div>
-                <div class="form-group">
-                  <label for="number">Valor</label>
-                  <input type="number" class="form-control" id="valor" placeholder="Coloque o valor" name="valor">
-                  <span class='msg-erro msg-valor'></span>
-                </div>
-                <div class="form-group">
-                  <label for="data">Data de Pagamento</label>
-                  <input type="date" class="form-control" id="data_pagamento" maxlength="10" name="data_pagamento" placeholder="Infome a Data de Pagamento">
-                  <span class='msg-erro msg-data_pagamento'></span>
-                </div>
-                <div class="form-group">
-                  <label for="text">Fornecedor</label>
-                  <input type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor" name="fornecedor">
-                </div>
-              <!-- /.box-body -->          
-              <div class="box-footer">
-                <input type="hidden" name="acao" value="incluir">
-                <button type="submit" class="btn btn-primary" id='botao'>Gravar</button>
+        <!-- /.Se get id não existir -->
+          <?php if (empty($id_editar)): ?>
+            <div class="col-md-4">
+              <div class="row">
               </div>
-            </form>
-          </div>
+              <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Novo Gasto</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="action_gastos.php" method="post" id='form-contato' enctype='multipart/form-data'>
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label for="tag">Tag</label>
+                      <select name="tag" id="tag" class="form-control">
+                        <option value="Aluguel">Aluguel</option> 
+                        <option value="Comida">Comida</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Impostos">Impostos</option>
+                        <option value="Holerite">Salário de funcionário</option>
+                        <option value="Outros" selected>Outros</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="text">Descrição</label>
+                      <input type="text" class="form-control" id="descricao" placeholder="Digite uma descrição do gasto" name="descricao">
+                    </div>
+                    <div class="form-group">
+                      <label for="number">Valor</label>
+                      <input type="number" class="form-control" id="valor" placeholder="Coloque o valor" name="valor">
+                      <span class='msg-erro msg-valor'></span>
+                    </div>
+                    <div class="form-group">
+                      <label for="data">Data de Pagamento</label>
+                      <input type="date" class="form-control" id="data_pagamento" maxlength="10" name="data_pagamento" placeholder="Infome a Data de Pagamento">
+                      <span class='msg-erro msg-data_pagamento'></span>
+                    </div>
+                    <div class="form-group">
+                      <label for="text">Fornecedor</label>
+                      <input type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor" name="fornecedor">
+                    </div>
+                  <!-- /.box-body -->          
+                  <div class="box-footer">
+                    <input type="hidden" name="acao" value="incluir">
+                    <button type="submit" class="btn btn-primary" id='botao'>Gravar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
 
-        </div>
+          <?php else: ?>
+            <?php
+              $conexao = conexao::getInstance();
+              $sql = 'SELECT id, tag, descricao, valor, fornecedor, data FROM gastos WHERE id=:id_gasto';
+              $stm = $conexao->prepare($sql);
+              $stm->bindValue(':id_gasto', $id_editar);
+              $stm->execute();
+              $gastos = $stm->fetchAll(PDO::FETCH_OBJ);
+            ?>
+            <?php foreach($gastos as $gasto):?>
+
+            <?php endforeach;?>
+            <div class="col-md-4">
+              <div class="row">
+              </div>
+              <div class="box box-success">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Editar Gasto</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="action_gastos.php" method="post" id='form-contato' enctype='multipart/form-data'>
+                  <div class="box-body">
+                    <div class="form-group">
+                      <label for="tag">Tag</label>
+                      <select name="tag" id="tag" value="<?=$gasto->tag?>" class="form-control">
+                        <?php if($gasto->tag=='Aluguel'): ?>
+                          <option value="Aluguel" selected>Aluguel</option> 
+                          <option value="Comida">Comida</option>
+                          <option value="Internet">Internet</option>
+                          <option value="Impostos">Impostos</option>
+                          <option value="Holerite">Salário de funcionário</option>
+                          <option value="Outros">Outros</option>
+                        <?php endif ?>
+                        <?php if($gasto->tag==Comida): ?>
+                          <option value="Aluguel">Aluguel</option>
+                          <option value="Comida" selected>Comida</option>
+                          <option value="Internet">Internet</option>
+                          <option value="Impostos">Impostos</option>
+                          <option value="Holerite">Salário de funcionário</option>
+                          <option value="Outros">Outros</option>
+                        <?php endif ?>
+                        <?php if($gasto->tag==Internet): ?>
+                          <option value="Aluguel">Aluguel</option>
+                          <option value="Comida">Comida</option>
+                          <option value="Internet" selected>Internet</option>
+                          <option value="Impostos">Impostos</option>
+                          <option value="Holerite">Salário de funcionário</option>
+                          <option value="Outros">Outros</option>
+                        <?php endif ?>
+                        <?php if($gasto->tag==Impostos): ?>
+                          <option value="Aluguel">Aluguel</option>
+                          <option value="Comida">Comida</option>
+                          <option value="Internet">Internet</option>
+                          <option value="Impostos" selected>Impostos</option>
+                          <option value="Holerite">Salário de funcionário</option>
+                          <option value="Outros">Outros</option>
+                        <?php endif ?>
+                        <?php if($gasto->tag==Holerite): ?>
+                          <option value="Aluguel">Aluguel</option>
+                          <option value="Comida">Comida</option>
+                          <option value="Internet">Internet</option>
+                          <option value="Impostos">Impostos</option>
+                          <option value="Holerite" selected>Salário de funcionário</option>
+                          <option value="Outros">Outros</option>
+                        <?php endif ?>
+                        <?php if($gasto->tag==Outros): ?>
+                          <option value="Aluguel">Aluguel</option>
+                          <option value="Comida">Comida</option>
+                          <option value="Internet">Internet</option>
+                          <option value="Impostos">Impostos</option>
+                          <option value="Holerite">Salário de funcionário</option>
+                          <option value="Outros" selected>Outros</option>
+                        <?php endif ?> 
+                        
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="text">Descrição</label>
+                      <input type="text" class="form-control" id="descricao" value="<?=$gasto->descricao?>" placeholder="Digite uma descrição do gasto" name="descricao">
+                    </div>
+                    <div class="form-group">
+                      <label for="number">Valor</label>
+                      <input type="number" class="form-control" id="valor" value="<?=$gasto->valor?>" placeholder="Coloque o valor" name="valor">
+                      <span class='msg-erro msg-valor'></span>
+                    </div>
+                    <div class="form-group">
+                      <label for="data">Data de Pagamento</label>
+                      <input type="date" class="form-control" id="data_pagamento" value="<?=$gasto->data?>" maxlength="10" name="data_pagamento" placeholder="Infome a Data de Pagamento">
+                      <span class='msg-erro msg-data_pagamento'></span>
+                    </div>
+                    <div class="form-group">
+                      <label for="text">Fornecedor</label>
+                      <input type="text" class="form-control" id="fornecedor" value="<?=$gasto->fornecedor?>" placeholder="Digite o nome do fornecedor" name="fornecedor">
+                    </div>
+                    <input type="hidden" name="id" value="<?=$gasto->id?>">
+                  <!-- /.box-body -->          
+                  <div class="box-footer">
+                    <input type="hidden" name="acao" value="editar">
+                    <button type="submit" class="btn btn-primary" id='botao'>Gravar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          <?php endif; ?>
+        
       </div>
                    
     </section>

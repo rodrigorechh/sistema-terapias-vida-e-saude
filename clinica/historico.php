@@ -256,7 +256,7 @@ require 'conexao.php';
     <form action="historico.php" method="get" id='mes' enctype='multipart/form-data'>
       <section class="content container-fluid">
         <select name="mes" id="mes" class="form-control">
-          <option value="" selected>Selecione o Mês</option>
+          <option value="" selected>Selecione Mês / Mês Atual</option>
           <option value="1" >Janeiro</option>
           <option value="2" >Fevereiro</option>
           <option value="3" >Março</option>

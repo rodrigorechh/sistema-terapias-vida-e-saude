@@ -86,10 +86,19 @@ VALUES (NULL, NULL, 'Massagem', '33333333333', '130', '16:00:00', '2020-01-10', 
 
 
 INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
-VALUES ('Aluguel', 'pagamento do aluguel', '860,00', NULL, '2019-12-01');
+VALUES ('Aluguel', 'Pag sala comercial', '1000', 'Locações e CIA', '2019-12-01');
 
 INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
-VALUES ('Luz', 'pagamento de boleto', '185,00', 'Celesc', '2019-12-03');
+VALUES ('Comida', 'Amburguer', '10', 'MacLanches', '2019-12-03');
 
 INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
-VALUES ('Internet', 'pagamento de boleto', '100,00', 'Net', '2019-12-05');
+VALUES ('Impostos', 'ICMS', '200', 'Corretora Ltda', '2019-12-05');
+
+INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
+VALUES ('Internet', 'Pag Internet', '60', 'Net', '2019-12-10');
+
+INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
+VALUES ('Holerite', 'Pag Salário', '1100', 'Terapias vida & saúde', '2019-12-11');
+
+INSERT INTO `gastos` (`tag`, `descricao`, `valor`, `fornecedor`, `data`) 
+VALUES ('Outros', 'Estoque', '50', 'Casa das Agulhas', '2019-12-10');
