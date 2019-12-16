@@ -184,7 +184,7 @@ endif;
   <!-- /.navbar -->
 
   <?php 
-    include 'menuLateral.html';
+    include 'menuLateralClientes.html';
   ?> 
 
   <!-- Content Wrapper. Contains page content -->

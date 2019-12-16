@@ -162,7 +162,7 @@ $id_editar = (isset($_GET['id'])) ? $_GET['id'] : '';
   <!-- /.navbar -->
 
   <?php 
-    include 'menuLateral.html';
+    include 'menuLateralGastosMensais.html';
   ?> 
   <?php 
     $mes_atual = date("m");

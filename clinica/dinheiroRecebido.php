@@ -165,7 +165,7 @@ require 'conexao.php';
   <!-- /.navbar -->
 
   <?php 
-    include 'menuLateral.html';
+    include 'menuLateralDinheiroRecebido.html';
   ?> 
   <?php
   $mes_atual = date("m");
